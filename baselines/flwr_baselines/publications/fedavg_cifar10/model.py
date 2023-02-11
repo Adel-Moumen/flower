@@ -25,6 +25,7 @@ class Net(nn.Module):
         self.fc1 = nn.Linear(16 * 5 * 5, 120)
         self.fc2 = nn.Linear(120, 84)
         self.fc3 = nn.Linear(84, 10)
+        self.flatten = nn.Flatten() 
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """Forward pass of the CNN.
@@ -41,7 +42,7 @@ class Net(nn.Module):
         """
         x = self.pool(F.relu(self.conv1(x)))
         x = self.pool(F.relu(self.conv2(x)))
-        x = x.view(-1, 16 * 5 * 5)
+        x = self.flatten(x)
         x = F.relu(self.fc1(x))
         x = F.relu(self.fc2(x))
         x = self.fc3(x)
